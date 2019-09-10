@@ -49,7 +49,7 @@ while dis > tol
   
     
     % what is the distance between current guess and value function
-    dis = max(max(abs(vfn-v_guess)./vfn));
+    dis = max(abs(vfn - v_guess));
     
     % if distance is larger than tolerance, update current guess and
     % continue, otherwise exit the loop
@@ -58,8 +58,8 @@ end
 
 %g = k(pol_indx); % policy function
 
-%plot(k,vfn_low,'-',k,vfn_high,':')
-
+plot(k,vfn_low,'-',k,vfn_high,':')
+figure
 plot(k,pol_index_low,'-',k,pol_index_high,':')
 
 
