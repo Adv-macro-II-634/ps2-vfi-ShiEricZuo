@@ -58,8 +58,8 @@ end
 
 %g = k(pol_indx); % policy function
 
-plot(k,vfn_low,'-',k,vfn_high,':')
-%figure
-%plot(k,g)
+%plot(k,vfn_low,'-',k,vfn_high,':')
+
+plot(k,pol_index_low,'-',k,pol_index_high,':')
 
 
