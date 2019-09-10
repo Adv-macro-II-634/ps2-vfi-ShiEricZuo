@@ -30,8 +30,8 @@ ret_low = cons_low .^ (1 - sigma) / (1 - sigma);
 ret_high = cons_high .^ (1 - sigma) / (1 - sigma);% return function
 % negative consumption is not possible -> make it irrelevant by assigning
 % it very large negative utility
-%ret_low(find(isnan(ret_low))) = -inf;
-%ret_high(find(isnan(ret_high))) = -inf;
+ret_low(find(isnan(ret_low))) = -inf;
+ret_high(find(isnan(ret_high))) = -inf;
 
 %%%% Iteration
 dis = 1; tol = 1e-07; % tolerance for stopping 
@@ -39,18 +39,17 @@ v_guess = zeros(num_k,2);
 pol_index = zeros(num_k,2);
 while dis > tol
     % compute the utility value for all possible combinations of k and k':
-   [vfn_low,pol_index_low]=max(ret_low + beta*repmat(v_guess*prob(2,:)',1,num_k));
+     [vfn_low,pol_index_low]=max(ret_low + beta*repmat(v_guess*prob(2,:)',1,num_k));
   [vfn_high,pol_index_high]=max(ret_high + beta*repmat(v_guess*prob(1,:)',1,num_k));
     % find the optimal k' for every k:
  
   
-   
   pol_index=[pol_index_low' pol_index_high'];
  vfn=[vfn_low' vfn_high'];
   
     
     % what is the distance between current guess and value function
-    dis = max(abs(vfn - v_guess));
+    dis = max(max(abs(vfn-v_guess)./vfn));
     
     % if distance is larger than tolerance, update current guess and
     % continue, otherwise exit the loop
@@ -59,10 +58,7 @@ end
 
 %g = k(pol_indx); % policy function
 
-plot(k,vfn_high,':',k,vfn_low,'-')
-
-
-figure
+%plot(k,vfn_low,'-',k,vfn_high,':')
 
 plot(k,pol_index_low,'-',k,pol_index_high,':')
 
