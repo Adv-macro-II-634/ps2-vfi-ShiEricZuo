@@ -73,5 +73,52 @@ figure
 plot(k,saving_l,'-',k,saving_h,':')
 
 
+%simulation
+T_sim=1000;
+a_high_sim=1.0001;
+a_low_sim=(1-a_high_sim*0.7629)/0.2371;
+a_state=[a_high_sim;a_low_sim];
+%draw random number for A
+rng(1);
+rand_nums=rand(T_sim,1);
+
+%turn random numbers into value for A using 
+A_sim = zeros(T_sim,1);
+A_sim(1)=1;
+%start with arbitrary capital stock, then follow the policy funtion
+%according to simulated state in the current period
+k_sim=zeros(T_sim,1);
+k_sim(1)=5;
+
+%Space to store the simulated values of tech and capital
+A=zeros(T_sim,1);
+K=zeros(T_sim,1);
+
+%Process of simulation
+
+for t=1:T_sim
+    if A_sim(t) ==1
+        if  rand_nums(t)<0.977 
+               A_sim(t+1) = 1; 
+        else 
+               A_sim(t+1) = 2; 
+        end
+    elseif rand_nums(t)<0.926 
+               A_sim(t+1) = 2; 
+             else 
+                 A_sim(t+1) =1;
+    end
+  k_sim(t+1)=pol_index(A_sim(t),k_sim(t));            
+end
+
+
+%Update the simulated values into the space
+A=a_state(A_sim);
+K=k(k_sim);
+
+%Calculate output and its s.d.
+y=A'.*(K.^alpha);
+sdy=std(y);
+
 
 
