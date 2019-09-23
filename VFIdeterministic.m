@@ -116,8 +116,13 @@ end
 A=a_state(A_sim);
 K=k(k_sim);
 
-%Calculate output and its s.d.
+%Calculate output 
 y=A'.*(K.^alpha);
+
+%remove the first few, unusually small y
+y(1:20)=[];
+
+%Calculate s.d.
 sdy=std(y);
 
 
